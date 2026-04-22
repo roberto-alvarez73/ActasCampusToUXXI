@@ -1,1 +1,2 @@
+pip install openpyxl pyexcel-ods3 pyinstaller
 pyinstaller --target-architecture universal2 --windowed --clean --onefile ExportGradesCVtoUXXI.py
