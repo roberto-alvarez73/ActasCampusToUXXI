@@ -399,21 +399,23 @@ class App:
                 f"Error al exportar las calificaciones:\n{str(e)}",
             )
 
+    def obtener_indice_columna(self, encabezados, nombre_columna):
+        for i, encabezado in enumerate(encabezados):
+            if encabezado is not None and str(encabezado).strip() == nombre_columna:
+                return i
+        return -1
+
     def obtener_indice_columna_ods(self, encabezados, nombre_columna):
         for i, encabezado in enumerate(encabezados):
             if encabezado is not None and str(encabezado).strip() == nombre_columna:
                 return i
-        raise Exception(
-            f"No se encontró la columna '{nombre_columna}' en la primera fila del archivo."
-        )
+        return -1
 
     def obtener_indice_columna_xlsx(self, encabezados, nombre_columna):
         for i, encabezado in enumerate(encabezados):
             if encabezado is not None and str(encabezado).strip() == nombre_columna:
                 return i
-        raise Exception(
-            f"No se encontró la columna '{nombre_columna}' en la primera fila del archivo."
-        )
+        return -1
 
     def cargar_datoscv_ods(self, filepath):
         try:
@@ -426,9 +428,13 @@ class App:
                 raise Exception("El archivo ODS está vacío.")
 
             # Obtenemos la posición de la columna con la nota final de la asignatura
-            idx_nota = self.obtener_indice_columna_ods(
-                sheet[0], "Total del curso (Real)"
-            )
+            # Primero intentamos con el nombre de la columna en español "Total del curso (Real)"
+            idx_nota = self.obtener_indice_columna(sheet[0], "Total del curso (Real)")
+            # Si no se encuentra, intentamos con el nombre en inglés "Course total (Real)"
+            if idx_nota == -1:
+                idx_nota = self.obtener_indice_columna(sheet[0], "Course total (Real)")
+                if idx_nota == -1:  # Si no se encuentra con ningún nombre => Excepción
+                    raise Exception("No se ha encontrado la columna con la nota final de la asignatura.")
 
             # Limpiar listado actual
             for item in self.tree_cv.get_children():
@@ -483,9 +489,13 @@ class App:
                 raise Exception("El archivo Excel está vacío.")
 
             # Obtenemos la posición de la columna con la nota final de la asignatura
-            idx_nota = self.obtener_indice_columna_xlsx(
-                encabezados, "Total del curso (Real)"
-            )
+            # Primero intentamos con el nombre de la columna en español "Total del curso (Real)"
+            idx_nota = self.obtener_indice_columna_xlsx(encabezados, "Total del curso (Real)")
+            # Si no se encuentra, intentamos con el nombre en inglés "Course total (Real)"
+            if idx_nota == -1:
+                idx_nota = self.obtener_indice_columna_xlsx(encabezados, "Course total (Real)")
+                if idx_nota == -1:  # Si no se encuentra con ningún nombre => Excepción
+                    raise Exception("No se ha encontrado la columna con la nota final de la asignatura.")
 
             # Limpiar listado actual
             for item in self.tree_cv.get_children():
