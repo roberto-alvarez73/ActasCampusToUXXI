@@ -405,18 +405,6 @@ class App:
                 return i
         return -1
 
-    def obtener_indice_columna_ods(self, encabezados, nombre_columna):
-        for i, encabezado in enumerate(encabezados):
-            if encabezado is not None and str(encabezado).strip() == nombre_columna:
-                return i
-        return -1
-
-    def obtener_indice_columna_xlsx(self, encabezados, nombre_columna):
-        for i, encabezado in enumerate(encabezados):
-            if encabezado is not None and str(encabezado).strip() == nombre_columna:
-                return i
-        return -1
-
     def cargar_datoscv_ods(self, filepath):
         try:
             # Cargar archivo ODS
@@ -602,7 +590,6 @@ class App:
                     self.tree_uxxi.insert(
                         "", tk.END, values=(nombre, nota_uxxi, nota_exp)
                     )
-
         except Exception as e:
             messagebox.showerror(
                 "Error", f"Error al cargar el Excel de UXXI:\n{str(e)}"
