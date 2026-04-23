@@ -478,10 +478,10 @@ class App:
 
             # Obtenemos la posición de la columna con la nota final de la asignatura
             # Primero intentamos con el nombre de la columna en español "Total del curso (Real)"
-            idx_nota = self.obtener_indice_columna_xlsx(encabezados, "Total del curso (Real)")
+            idx_nota = self.obtener_indice_columna(encabezados, "Total del curso (Real)")
             # Si no se encuentra, intentamos con el nombre en inglés "Course total (Real)"
             if idx_nota == -1:
-                idx_nota = self.obtener_indice_columna_xlsx(encabezados, "Course total (Real)")
+                idx_nota = self.obtener_indice_columna(encabezados, "Course total (Real)")
                 if idx_nota == -1:  # Si no se encuentra con ningún nombre => Excepción
                     raise Exception("No se ha encontrado la columna con la nota final de la asignatura.")
 
